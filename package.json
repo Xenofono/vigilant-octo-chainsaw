@@ -6,13 +6,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-<<<<<<< HEAD
-    "node-libs-browser": "^2.2.1",
-=======
     "cross-spawn": "^7.0.1",
     "node-libs-browser": "^2.2.1",
     "prop-types": "^15.7.2",
->>>>>>> d6f3103d2471c774f5e3b240a372bbaa96b1cc4c
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0"
