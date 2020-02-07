@@ -4,7 +4,7 @@ const layout = props => (
     <React.Fragment>
         <div>
             Toolbar, SideDrawer, Backdrop
-            
+
         </div>
         <main>
             {props.children}
