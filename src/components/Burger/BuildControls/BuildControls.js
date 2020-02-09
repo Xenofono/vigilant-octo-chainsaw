@@ -27,6 +27,14 @@ const BuildControls = (props) => {
           price={props.INGREDIENT_PRICES[control.type]}
         />
       ))}
+      <button
+        className={classes.OrderButton}
+        disabled={Object.values(props.disabledInfo).every(
+          (val) => val === true
+        )}
+        onClick={props.togglePurchaseNow}>
+        BEKRÄFTA BESTÄLLNING
+      </button>
     </div>
   );
 };
