@@ -28,6 +28,10 @@ class BurgerBuilder extends Component {
       return { purchaseNow: !oldState.purchaseNow };
     });
 
+  purchaseContinueHandler = () => {
+    console.log("TJOTJO")
+  }
+
   addIngredientsHandler = (ingredient) => {
     const oldCount = this.state.ingredients[ingredient];
     const updatedIngredients = { ...this.state.ingredients };
@@ -57,8 +61,8 @@ class BurgerBuilder extends Component {
     }
     return (
       <React.Fragment>
-        <Modal show={this.state.purchaseNow}>
-          <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+        <Modal show={this.state.purchaseNow} modalClosed={this.togglePurchaseNow}>
+          <OrderSummary totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} purchaseContinue={this.purchaseContinueHandler} modalClosed={this.togglePurchaseNow}></OrderSummary>
         </Modal>
 
         <Burger ingredients={this.state.ingredients}></Burger>
