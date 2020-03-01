@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Button from '../../UI/Button/Button';
 
 const OrderSummary = (props) => {
+
+useEffect(() => {
+  console.log("hej från ordersummary")
+})
+
   const ingredientsSummary = Object.keys(props.ingredients).map((key) => (
     <li key={key}><span>{key}: </span>{props.ingredients[key]}</li>
   ));
