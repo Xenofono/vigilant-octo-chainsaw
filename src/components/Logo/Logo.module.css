@@ -4,6 +4,8 @@
     height: 100%;
     box-sizing: border-box;
     border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .Logo img {
