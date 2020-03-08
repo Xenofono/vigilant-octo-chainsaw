@@ -3,6 +3,9 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+import axios from "../../axios-orders";
 
 const INGREDIENT_PRICES = {
   salad: 5,
@@ -20,19 +23,43 @@ class BurgerBuilder extends Component {
       meat: 0
     },
     totalPrice: 70,
-    purchaseNow: false
+    purchaseNow: false,
+    loading: false
   };
 
   togglePurchaseNow = () =>
-    this.setState((oldState) => {
+    this.setState(oldState => {
       return { purchaseNow: !oldState.purchaseNow };
     });
 
   purchaseContinueHandler = () => {
-    console.log("TJOTJO")
-  }
+    this.setState({ loading: true });
+    
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: "Kristoffer Näsström",
+        address: {
+          street: "Cevelidsgatan 17",
+          zipCode: "86035",
+          city: "Söråker"
+        },
+        email: "test@test.com"
+      },
+      expressDelivery: true
+    };
+    axios
+      .post("/orders.json", order)
+      .then(response => {
+        this.setState({ loading: false, purchaseNow: false });
+      })
+      .catch(err => {
+        this.setState({ loading: false, purchaseNow: false });
+      });
+  };
 
-  addIngredientsHandler = (ingredient) => {
+  addIngredientsHandler = ingredient => {
     const oldCount = this.state.ingredients[ingredient];
     const updatedIngredients = { ...this.state.ingredients };
     updatedIngredients[ingredient] = oldCount + 1;
@@ -41,7 +68,7 @@ class BurgerBuilder extends Component {
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
   };
 
-  removeIngredientsHandler = (ingredient) => {
+  removeIngredientsHandler = ingredient => {
     const oldCount = this.state.ingredients[ingredient];
     if (oldCount > 0) {
       const updatedIngredients = { ...this.state.ingredients };
@@ -59,10 +86,24 @@ class BurgerBuilder extends Component {
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
+    let orderSummary = (
+      <OrderSummary
+        totalPrice={this.state.totalPrice}
+        ingredients={this.state.ingredients}
+        purchaseContinue={this.purchaseContinueHandler}
+        modalClosed={this.togglePurchaseNow}
+      ></OrderSummary>
+    );
+    if (this.state.loading) {
+      orderSummary = <Spinner></Spinner>;
+    }
     return (
       <React.Fragment>
-        <Modal show={this.state.purchaseNow} modalClosed={this.togglePurchaseNow}>
-          <OrderSummary totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} purchaseContinue={this.purchaseContinueHandler} modalClosed={this.togglePurchaseNow}></OrderSummary>
+        <Modal
+          show={this.state.purchaseNow}
+          modalClosed={this.togglePurchaseNow}
+        >
+          {orderSummary}
         </Modal>
 
         <Burger ingredients={this.state.ingredients}></Burger>
@@ -79,4 +120,4 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
