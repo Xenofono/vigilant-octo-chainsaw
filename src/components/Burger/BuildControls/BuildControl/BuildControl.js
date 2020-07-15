@@ -9,10 +9,10 @@ const BuildControl = (props) => {
         className={classes.Less}
         onClick={props.removeHandler}
         disabled={props.isZero}>
-        Less
+        Mindre
       </button>
       <button className={classes.More} onClick={props.addHandler}>
-        More
+        Mer
       </button>
       <div className={classes.Label}>{props.price} kr</div>
     </div>
