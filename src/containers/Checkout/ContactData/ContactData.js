@@ -7,9 +7,6 @@ import axios from "../../../axios-orders";
 import css from "./ContactData.module.css";
 
 export default function ContactData(props) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState(null);
   const [formElements, setFormElements] = useState({
     name: {
       elementType: "input",
@@ -18,6 +15,10 @@ export default function ContactData(props) {
         placeholder: "Ditt namn",
       },
       value: "",
+      validation:{
+        required:true
+      },
+      valid: false
     },
     street: {
       elementType: "input",
@@ -26,6 +27,10 @@ export default function ContactData(props) {
         placeholder: "Din gatuadress",
       },
       value: "",
+      validation:{
+        required:true
+      },
+      valid: false
     },
     zipCode: {
       elementType: "input",
@@ -34,6 +39,11 @@ export default function ContactData(props) {
         placeholder: "Ditt postnummer",
       },
       value: "",
+      validation:{
+        required:true,
+        minLength: 5
+      },
+      valid: false
     },
     city: {
       elementType: "input",
@@ -42,6 +52,10 @@ export default function ContactData(props) {
         placeholder: "Ort",
       },
       value: "",
+      validation:{
+        required:true
+      },
+      valid: false
     },
     email: {
       elementType: "input",
@@ -50,6 +64,10 @@ export default function ContactData(props) {
         placeholder: "Epost",
       },
       value: "",
+      validation:{
+        required:true
+      },
+      valid: false
     },
     deliveryMethod: {
       elementType: "select",
@@ -59,18 +77,26 @@ export default function ContactData(props) {
           { value: "Billigast", displayValue: "Billigast" },
         ],
       },
-      value: "",
+      value: "Snabbast",
+      validation:{},
+      valid:true
     },
   });
   const [loading, setLoading] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false)
 
   const orderHandler = (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const formData = {}
+    for(let formEl in formElements){
+      console.log(formEl)
+      formData[formEl] = formElements[formEl].value
+    }
     const order = {
       ingredients: props.ingredients,
       price: props.price,
+      orderData: formData
     };
     axios
       .post("/orders.json", order)
@@ -83,20 +109,56 @@ export default function ContactData(props) {
       });
   };
 
+  const checkValidity = (value, rules) => {
+    let isValid = true;
+    if(rules.required){
+      isValid = value.trim() !== '' && isValid
+    }
+    if(rules.minLength){
+      isValid = value.length >= 5 && isValid
+    }
+    console.log(isValid)
+    return isValid
+  }
+
+
+  const inputChangedHandler = (e, inputIdentifier) => {
+    const formClone = {...formElements}
+    const inputClone = {...formClone[inputIdentifier]}
+    inputClone.value = e.target.value
+    inputClone.valid = checkValidity(inputClone.value, inputClone.validation)
+    formClone[inputIdentifier] = inputClone
+
+    let entireFormValid = true;
+    for(let formEl in formClone){
+      if(!formClone[formEl].valid){
+        entireFormValid = false
+      }
+    }
+    setFormElements(() => {
+      setFormIsValid(entireFormValid)
+      return formClone
+    })
+  }
+
   const formElementsArr = Object.entries(formElements).map((el) => {
     return { key: el[0], config: el[1] };
   });
 
+  
+
   return !loading ? (
     <div className={css.ContactData}>
       <h4>Dina kontaktuppgifter</h4>
-      <form>
+      <form onSubmit={orderHandler}>
         {formElementsArr.map(el => <Input 
         key={el.key}
         elementType={el.config.elementType} 
         elementConfig={el.config.elementConfig} 
-        value={el.config.value} ></Input>)}
-        <Button btnType="Success" clicked={orderHandler}>
+        value={el.config.value}
+        valid={el.config.valid}
+        changed={(event) => inputChangedHandler(event, el.key)} ></Input>)}
+        <Button btnType="Success" disabled={!formIsValid}>
           BESTÄLL
         </Button>
       </form>
