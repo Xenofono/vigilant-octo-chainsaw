@@ -6,7 +6,11 @@ import Input from "../../../components/UI/Input/Input";
 import axios from "../../../axios-orders";
 import css from "./ContactData.module.css";
 
-export default function ContactData(props) {
+import {connect} from 'react-redux'
+
+
+
+const ContactData = (props) => {
   const [formElements, setFormElements] = useState({
     name: {
       elementType: "input",
@@ -167,3 +171,12 @@ export default function ContactData(props) {
     <Spinner></Spinner>
   );
 }
+
+
+const mapStateToProps = state => {
+  return {ingredients: state.ingredients,
+  price: state.totalPrice}
+}
+
+
+export default connect(mapStateToProps)(ContactData);

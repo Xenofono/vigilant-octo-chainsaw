@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./BuildControls.module.css";
 
 import BuildControl from "./BuildControl/BuildControl";
+import {INGREDIENT_PRICES} from "../../../store/reducers/burgerBuilder"
 
 const BuildControls = (props) => {
   const controls = [
@@ -24,7 +25,7 @@ const BuildControls = (props) => {
           isZero={props.disabledInfo[control.type]}
           addHandler={() => props.addHandler(control.type)}
           removeHandler={() => props.removeHandler(control.type)}
-          price={props.INGREDIENT_PRICES[control.type]}
+          price={INGREDIENT_PRICES[control.type]}
         />
       ))}
       <button
