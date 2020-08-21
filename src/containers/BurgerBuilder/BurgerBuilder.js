@@ -5,27 +5,18 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import axios from "../../axios-orders";
 import {connect} from 'react-redux'
+import axios from "../../axios-orders";
+
 import * as burgerBuilder from '../../store/actions/index'
 
 
 class BurgerBuilder extends Component {
   state = {
     purchaseNow: false,
-    loading: false,
-    error: false
   };
   componentDidMount = () => {
-    // axios
-    //   .get("ingredients.json")
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error: true });
-    //   });
+    this.props.onInitIngredients()
   };
 
   togglePurchaseNow = () =>
@@ -58,7 +49,7 @@ class BurgerBuilder extends Component {
 
   render() {
     let orderSummary = null;
-    let displayBurger = this.state.error ? (
+    let displayBurger = this.props.error ? (
       <p>Kan inte ladda ingredienser!</p>
     ) : (
       <Spinner></Spinner>
@@ -72,7 +63,6 @@ class BurgerBuilder extends Component {
           purchaseContinue={this.purchaseContinueHandler}
           modalClosed={this.togglePurchaseNow}></OrderSummary>
       );
-      console.log(this.props)
 
       displayBurger = (
         <React.Fragment>
@@ -86,11 +76,6 @@ class BurgerBuilder extends Component {
           />
         </React.Fragment>
       );
-    }
-
-
-    if (this.state.loading) {
-      orderSummary = <Spinner></Spinner>;
     }
 
     return (
@@ -107,14 +92,16 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.burgerBuilderReducer)
-  return {ingredients: state.burgerBuilderReducer.ingredients, totalPrice: state.burgerBuilderReducer.totalPrice}
+  return {ingredients: state.burgerBuilderReducer.ingredients,
+     totalPrice: state.burgerBuilderReducer.totalPrice,
+    error: state.burgerBuilderReducer.error}
 }
 
 const mapDispatchToProps = dispatch => {
   return { 
     addIngredientHandler: (ingredient) => dispatch(burgerBuilder.addIngredient(ingredient)),
     removeIngredientHandler: (ingredient) => dispatch(burgerBuilder.removeIngredient(ingredient)),
+    onInitIngredients: () => dispatch(burgerBuilder.initIngredients())
   }
 }
 

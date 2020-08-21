@@ -8,22 +8,15 @@ export const INGREDIENT_PRICES = {
 };
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 0,
-  },
+  ingredients: null,
   totalPrice: 70,
+  error: false,
 };
 
 const burgerBuilderReducer = (state = initialState, action) => {
-  console.log("i reducer")
-  console.log(action)
-
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
-      console.log(action)
+      console.log(action);
       return {
         ...state,
         ingredients: {
@@ -43,6 +36,17 @@ const burgerBuilderReducer = (state = initialState, action) => {
           totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
         };
       } else break;
+    case actionTypes.SET_ERROR:
+      return {
+        ...state,
+        error: true,
+      };
+      case actionTypes.SET_INGREDIENTS:
+        return {
+          ...state,
+          ingredients: action.payload,
+          error: false
+        }
 
     default:
       return state;
