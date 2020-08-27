@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from "../../../axios-orders";
 import css from "./ContactData.module.css";
 
 import {connect} from 'react-redux'
+import {purchaseBurger} from '../../../store/actions/index'
 
 
 
@@ -86,12 +88,10 @@ const ContactData = (props) => {
       valid:true
     },
   });
-  const [loading, setLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false)
 
   const orderHandler = (e) => {
     e.preventDefault();
-    setLoading(true);
     const formData = {}
     for(let formEl in formElements){
       console.log(formEl)
@@ -102,15 +102,7 @@ const ContactData = (props) => {
       price: props.price,
       orderData: formData
     };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        setLoading(false);
-        props.history.push("/");
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    props.onOrderBurger(order)
   };
 
   const checkValidity = (value, rules) => {
@@ -151,7 +143,7 @@ const ContactData = (props) => {
 
   
 
-  return !loading ? (
+  return !props.loading ? (
     <div className={css.ContactData}>
       <h4>Dina kontaktuppgifter</h4>
       <form onSubmit={orderHandler}>
@@ -172,11 +164,16 @@ const ContactData = (props) => {
   );
 }
 
+const mapDispatchToProps = dispatch => ({
+onOrderBurger: (order) => dispatch(purchaseBurger(order)),
+})
+
 
 const mapStateToProps = state => {
-  return {ingredients: state.ingredients,
-  price: state.totalPrice}
+  return {ingredients: state.burgerBuilderReducer.ingredients,
+  price: state.burgerBuilderReducer.totalPrice,
+loading: state.orderReducer.loading}
 }
 
 
-export default connect(mapStateToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

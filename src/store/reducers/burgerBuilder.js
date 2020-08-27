@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../utility";
 
 export const INGREDIENT_PRICES = {
   salad: 5,
@@ -13,40 +14,42 @@ const initialState = {
   error: false,
 };
 
+const adjustIngredient = (state, action, func) => {
+  const updatedIngredients = updateObject(state.ingredients, {
+    [action.payload]: func(state.ingredients[action.payload]),
+  });
+  const updatedState = {
+    ingredients: updatedIngredients,
+    totalPrice: func(state.totalPrice, INGREDIENT_PRICES[action.payload]),
+  };
+  return updateObject(state, updatedState);
+};
+
 const burgerBuilderReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
-      console.log(action);
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.payload]: state.ingredients[action.payload] + 1,
-        },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
-      };
+      return adjustIngredient(
+        state,
+        action,
+        (target, defaultValue = 1) => target + defaultValue
+      );
+
     case actionTypes.REMOVE_INGREDIENT:
       if (state.ingredients[action.payload] >= 1) {
-        return {
-          ...state,
-          ingredients: {
-            ...state.ingredients,
-            [action.payload]: state.ingredients[action.payload] - 1,
-          },
-          totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
-        };
+        return adjustIngredient(
+          state,
+          action,
+          (target, defaultValue = 1) => target - defaultValue
+        );
       } else break;
     case actionTypes.SET_ERROR:
-      return {
-        ...state,
-        error: true,
-      };
-      case actionTypes.SET_INGREDIENTS:
-        return {
-          ...state,
-          ingredients: action.payload,
-          error: false
-        }
+      return updateObject(state, { error: true });
+    case actionTypes.SET_INGREDIENTS:
+      return updateObject(state, {
+        ingredients: action.payload,
+        error: false,
+        totalPrice: 70,
+      });
 
     default:
       return state;
