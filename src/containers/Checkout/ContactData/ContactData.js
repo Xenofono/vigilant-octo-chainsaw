@@ -102,7 +102,7 @@ const ContactData = (props) => {
       price: props.price,
       orderData: formData
     };
-    props.onOrderBurger(order)
+    props.onOrderBurger(order, props.token)
   };
 
   const checkValidity = (value, rules) => {
@@ -165,14 +165,15 @@ const ContactData = (props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-onOrderBurger: (order) => dispatch(purchaseBurger(order)),
+onOrderBurger: (order, token) => dispatch(purchaseBurger(order, token)),
 })
 
 
 const mapStateToProps = state => {
   return {ingredients: state.burgerBuilderReducer.ingredients,
   price: state.burgerBuilderReducer.totalPrice,
-loading: state.orderReducer.loading}
+loading: state.orderReducer.loading,
+token: state.authReducer.token}
 }
 
 
