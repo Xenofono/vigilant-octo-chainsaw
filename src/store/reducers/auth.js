@@ -6,9 +6,11 @@ const initialState = {
   userId: null,
   error: null,
   loading: false,
+  authRedirectPath: "/"
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(action.payload)
   switch (action.type) {
     case actionTypes.AUTH_FAIL:
       console.log("i reducer", action.payload);
@@ -24,6 +26,8 @@ const reducer = (state = initialState, action) => {
       });
     case actionTypes.AUTH_LOGOUT:
       return updateObject(state, { token: null, userId: null });
+    case actionTypes.AUTH_REDIRECT:
+      return updateObject(state, { authRedirectPath: action.payload})
 
     default:
       return state;
