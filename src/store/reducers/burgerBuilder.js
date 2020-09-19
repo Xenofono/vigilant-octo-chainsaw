@@ -12,6 +12,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 70,
   error: false,
+  building: false
 };
 
 const adjustIngredient = (state, action, func) => {
@@ -21,6 +22,7 @@ const adjustIngredient = (state, action, func) => {
   const updatedState = {
     ingredients: updatedIngredients,
     totalPrice: func(state.totalPrice, INGREDIENT_PRICES[action.payload]),
+    building: true 
   };
   return updateObject(state, updatedState);
 };
@@ -39,7 +41,7 @@ const burgerBuilderReducer = (state = initialState, action) => {
         return adjustIngredient(
           state,
           action,
-          (target, defaultValue = 1) => target - defaultValue
+          (target, defaultValue = 1) => target - defaultValue,
         );
       } else break;
     case actionTypes.SET_ERROR:
@@ -49,6 +51,7 @@ const burgerBuilderReducer = (state = initialState, action) => {
         ingredients: action.payload,
         error: false,
         totalPrice: 70,
+        building:false
       });
 
     default:

@@ -34,7 +34,7 @@ const BuildControls = (props) => {
           (val) => val === true
         )}
         onClick={props.togglePurchaseNow}>
-        BEKRÄFTA BESTÄLLNING
+          {props.isAuthenticated ? "BEKRÄFTA BESTÄLLNING" : "SKAPA KONTO ELLER LOGGA IN"}
       </button>
     </div>
   );
