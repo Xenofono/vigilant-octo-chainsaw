@@ -7,6 +7,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "axios";
 import {Redirect} from 'react-router-dom'
+import {checkValidity} from '../../shared/shared'
 
 import css from "./Auth.module.css";
 
@@ -49,16 +50,16 @@ class Auth extends Component {
     }
   }
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.minLength) {
-      isValid = value.length >= 6 && isValid;
-    }
-    return isValid;
-  };
+  // checkValidity = (value, rules) => {
+  //   let isValid = true;
+  //   if (rules.required) {
+  //     isValid = value.trim() !== "" && isValid;
+  //   }
+  //   if (rules.minLength) {
+  //     isValid = value.length >= 6 && isValid;
+  //   }
+  //   return isValid;
+  // };
 
   inputChangedHandler = (e, inputName) => {
     const formClone = {
@@ -66,7 +67,7 @@ class Auth extends Component {
       [inputName]: {
         ...this.state.controls[inputName],
         value: e.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           e.target.value,
           this.state.controls[inputName].validation
         ),

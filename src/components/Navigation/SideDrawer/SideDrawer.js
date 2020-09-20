@@ -1,32 +1,32 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import classes from "./SideDrawer.module.css";
-import Backdrop from '../../UI/Backdrop/Backdrop'
+import Backdrop from "../../UI/Backdrop/Backdrop";
 
-const SideDrawer = props => {
+const SideDrawer = (props) => {
+  const attachedClasses = [classes.SideDrawer, classes.Close];
 
-  const attachedClasses = [classes.SideDrawer, classes.Close]
-
-  if(props.open){
-    attachedClasses[1] = classes.Open
+  if (props.open) {
+    attachedClasses[1] = classes.Open;
   }
 
   return (
     <React.Fragment>
-    <Backdrop show={props.open} clicked={props.close}></Backdrop>
-    <div className={attachedClasses.join(" ")}>
-      <div className={classes.Logo}>
-        <Logo ></Logo>
+      <Backdrop show={props.open} clicked={props.close}></Backdrop>
+      <div className={attachedClasses.join(" ")} onClick={props.close}>
+        <div className={classes.Logo}>
+          <Logo></Logo>
+        </div>
+
+        <nav>
+          <NavigationItems
+            isAuthenticated={props.isAuthenticated}
+          ></NavigationItems>
+        </nav>
       </div>
-
-      <nav>
-        <NavigationItems isAuthenticated={props.isAuthenticated}></NavigationItems>
-      </nav>
-    </div>
     </React.Fragment>
-
   );
 };
 

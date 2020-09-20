@@ -11,7 +11,7 @@ const Orders = (props) => {
     console.log(props.loading)
 
     useEffect(() => {
-        props.fetchOrders(props.token)
+        props.fetchOrders(props.token, props.userId)
     }, [])
 
     return props.loading ? <Spinner></Spinner> : (
@@ -22,13 +22,14 @@ const Orders = (props) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchOrders: (token) => dispatch(fetchOrders(token))
+    fetchOrders: (token, userId) => dispatch(fetchOrders(token, userId))
 })
 
 const mapStateToProps = state => ({
     orders: state.orderReducer.orders,
     loading: state.orderReducer.loading,
-    token: state.authReducer.token
+    token: state.authReducer.token,
+    userId: state.authReducer.userId
     
 })
 

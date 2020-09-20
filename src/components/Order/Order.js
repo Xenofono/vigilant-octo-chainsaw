@@ -13,7 +13,7 @@ export default function Order(props) {
     <div className={css.Order}>
       <p>Ingredienser: {ingredients}</p>
       <p>
-        Pris: <strong>{props.price}</strong>
+        Pris: <strong>{props.price}</strong> kr
       </p>
     </div>
   );
