@@ -36,7 +36,6 @@ export const auth = (email, password, isSignUp) => {
     password,
     returnSecureToken: true,
   };
-  console.log("IS SIGNUP: ", isSignUp);
   //if isSignUp is true then the requests targets signup endpoint, otherwise login endpoint
   const URL =
     ROOT_URL + `${isSignUp ? "signUp" : "signInWithPassword"}?key=${KEY}`;
@@ -45,7 +44,6 @@ export const auth = (email, password, isSignUp) => {
     axios
       .post(URL, request)
       .then((response) => {
-        console.log(response);
         const expiresAt = new Date(
           new Date().getTime() + response.data.expiresIn * 1000
         );
@@ -56,7 +54,6 @@ export const auth = (email, password, isSignUp) => {
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((err) => {
-        console.log("I AUTH ERROR", err.response);
         dispatch(authFail(err.response.data.error));
       });
   };

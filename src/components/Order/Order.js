@@ -4,7 +4,7 @@ import css from "./Order.module.css";
 export default function Order(props) {
     const ingredients = Object.entries(props.ingredients).map((ing) => {
         return (
-          <span className={css.OrderSpan}>
+          <span className={css.OrderSpan} key={ing[0]}>
             {ing[0]}: {ing[1]}
           </span>
         );

@@ -4,8 +4,6 @@ import Button from "../../components/UI/Button/Button";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import axios from "axios";
 import {Redirect} from 'react-router-dom'
 import {checkValidity} from '../../shared/shared'
 
@@ -80,7 +78,6 @@ class Auth extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     const { email, password } = this.state.controls;
-    console.log(this.state.isSignUp);
     this.props.onAuth(email.value, password.value, this.state.isSignUp);
   };
 

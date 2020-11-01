@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import classes from "./NavigationItems.module.css";
 import NavigationItem from "./NavigationItem/NavigationItem";
 

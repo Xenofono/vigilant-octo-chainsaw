@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import classes from "./SideDrawer.module.css";
@@ -30,6 +29,5 @@ const SideDrawer = (props) => {
   );
 };
 
-SideDrawer.propTypes = {};
 
 export default SideDrawer;

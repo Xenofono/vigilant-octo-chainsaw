@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classes from './MenuButton.module.css'
 
 const MenuButton = props => {
@@ -12,8 +11,5 @@ const MenuButton = props => {
     )
 }
 
-MenuButton.propTypes = {
-
-}
 
 export default MenuButton

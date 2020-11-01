@@ -10,10 +10,8 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(action.payload)
   switch (action.type) {
     case actionTypes.AUTH_FAIL:
-      console.log("i reducer", action.payload);
       return updateObject(state, { error: action.payload, loading: false });
     case actionTypes.AUTH_START:
       return updateObject(state, { loading: true });

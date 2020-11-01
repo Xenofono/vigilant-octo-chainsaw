@@ -94,7 +94,6 @@ const ContactData = (props) => {
     e.preventDefault();
     const formData = {};
     for (let formEl in formElements) {
-      console.log(formEl);
       formData[formEl] = formElements[formEl].value;
     }
     const order = {
@@ -106,17 +105,7 @@ const ContactData = (props) => {
     props.onOrderBurger(order, props.token);
   };
 
-  // const checkValidity = (value, rules) => {
-  //   let isValid = true;
-  //   if (rules.required) {
-  //     isValid = value.trim() !== "" && isValid;
-  //   }
-  //   if (rules.minLength) {
-  //     isValid = value.length >= 5 && isValid;
-  //   }
-  //   console.log(isValid);
-  //   return isValid;
-  // };
+
 
   const inputChangedHandler = (e, inputIdentifier) => {
     const formClone = { ...formElements };
